@@ -1,10 +1,17 @@
+// requires 
+// process.env.SENTRY_DSN and process.env.SENTRY_URL
+
 let projectName = "sentry project"
 
 export let setProjectName = (name: string) => {
   projectName = name
 }
 
+let lastSendTime = 0
+let interval = 15_000
+
 export type SentryLevel = "error" | "warning" | "info" | "debug" | "fatal";
+export type SentryInterval = "daily" | "hourly"
 
 interface Input {
   dsn: string;
@@ -22,7 +29,7 @@ interface Tags {
   [key: string]: string;
 }
 
-export let sentryMessage = async (message: string, level: SentryLevel = "info") => {
+export let sentryMessage = async (message: string, level: SentryLevel = "info",) => {
   let event: Input = {
     dsn: process.env.SENTRY_DSN!,
     event: {
@@ -37,7 +44,16 @@ export let sentryMessage = async (message: string, level: SentryLevel = "info") 
   await sendRequest(event)
 }
 
-export let sentryError = async (payload: any, message = payload.message) => {
+export let sentryError = async (
+  payload: any,
+  message = payload.message,
+  sentryInterval: SentryInterval | undefined = undefined) => {
+  if (sentryInterval == "daily" && new Date().getHours() != 0) {
+    console.log(message, payload)
+    console.log("skipping sentry error, only sending daily")
+    return
+  }
+
   let event: Input = {
     dsn: process.env.SENTRY_DSN!,
     event: {
@@ -81,6 +97,13 @@ let sendRequest = async (event: Input) => {
   }
 
   let json = JSON.stringify(event)
+
+  if (new Date().getTime() - lastSendTime < interval) {
+    console.log(`skipping sending sentry message, last sent ${new Date().getTime() - lastSendTime}ms ago`)
+    return
+  }
+
+  lastSendTime = new Date().getTime()
   let response = await fetch(process.env.SENTRY_URL ?? "", {
     method: "POST",
     body: json
@@ -102,7 +125,6 @@ export let withSentry = async (block: () => Promise<any>): Promise<any> => {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e.message }),
-
     }
   }
 }
