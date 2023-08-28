@@ -42,8 +42,8 @@ export type ContestEmbeddings = {
 
 export type ContestWithModules = Contest & {
   modules: ContestModule[]
-  auditTime: number
-  loc: number
+  auditTime?: number
+  loc?: number
 }
 
 // could be different contracts or combination of contracts. Also frontend/backend
