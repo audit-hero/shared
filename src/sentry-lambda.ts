@@ -3,7 +3,7 @@
 
 let projectName = "sentry-project"
 
-export let setProjectName = (name: string) => {
+export let setSentryProjectName = (name: string) => {
   projectName = name
 }
 
