@@ -1,15 +1,11 @@
 {
   "name": "ah-shared",
   "version": "0.0.0",
-  "private": true,
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "type": "module",
   "scripts": {
-    "compile": "tsc",
-    "ts:defs": "tsc --declaration --outDir ./src --emitDeclarationOnly",
-    "build": "tsc",
-    "prepack": "yarn install && yarn build && yarn ts:defs"
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/node": "^20.1.5",
