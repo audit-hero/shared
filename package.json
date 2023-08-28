@@ -9,7 +9,7 @@
     "compile": "tsc",
     "ts:defs": "tsc --declaration --outDir ./src --emitDeclarationOnly",
     "build": "tsc",
-    "prepack": "yarn build && yarn ts:defs"
+    "prepack": "yarn install && yarn build && yarn ts:defs"
   },
   "devDependencies": {
     "@types/node": "^20.1.5",
