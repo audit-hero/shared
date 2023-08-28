@@ -7,8 +7,8 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "ts:defs": "tsc --declaration --outDir . --emitDeclarationOnly",
-    "build": "tsc --build",
+    "ts:defs": "tsc --declaration --outDir ./src --emitDeclarationOnly",
+    "build": "tsc",
     "prepack": "yarn build && yarn ts:defs"
   },
   "devDependencies": {
