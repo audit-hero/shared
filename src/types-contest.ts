@@ -52,7 +52,7 @@ export type ContestModule = {
   contest: string
   active: number
   // approximate audit time in seconds
-  auditTime: number
+  auditTime?: number
   link_in_md?: string
   url?: string
   path?: string
