@@ -1,0 +1,3 @@
+export const ALL_PLATFORMS = ["c4", "sherlock"];
+export const ALL_TAGS = ["none", "712", "721", "1967", "1155", "4626", "erc20", "nft", "bridge", "proxy", "l2", "domain_separator", "division", "initializ", "slippage", " amm ", "lend", "borrow", "swap", "stable", "curve", "token", "ecrecover", "foundry", "reentrancy", "flash loan", "weth", "fee on transfer"];
+//# sourceMappingURL=types-contest.js.map

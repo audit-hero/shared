@@ -1,7 +1,7 @@
 // requires 
 // process.env.SENTRY_DSN and process.env.SENTRY_URL
 
-let projectName = "sentry project"
+let projectName = "sentry projecttt"
 
 export let setProjectName = (name: string) => {
   projectName = name
