@@ -44,9 +44,9 @@ export let sentryMessage = async (message: string, level: SentryLevel = "info",)
   await sendRequest(event)
 }
 
-export let sentryError = async (
-  payload: any,
-  message = payload.message,
+let sentryError = async (
+  message: string,
+  payload: any | undefined,
   sentryInterval: SentryInterval | undefined = undefined) => {
   if (sentryInterval == "daily" && new Date().getHours() != 0) {
     console.log(message, payload)
@@ -120,7 +120,7 @@ export let withSentry = async (block: () => Promise<any>): Promise<any> => {
     return result
   }
   catch (e: any) {
-    await sentryError(e)
+    await sentryError("crash", e)
 
     return {
       statusCode: 500,
