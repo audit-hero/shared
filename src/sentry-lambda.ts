@@ -44,7 +44,7 @@ export let sentryMessage = async (message: string, level: SentryLevel = "info",)
   await sendRequest(event)
 }
 
-let sentryError = async (
+export let sentryError = async (
   message: string,
   payload: any | undefined,
   sentryInterval: SentryInterval | undefined = undefined) => {
