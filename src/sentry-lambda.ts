@@ -128,3 +128,20 @@ export let withSentry = async (block: () => Promise<any>): Promise<any> => {
     }
   }
 }
+
+export let withStreamingSentry = async (responseStream: any, block: any) => {
+  try {
+    let result = await block();
+    return result;
+  }
+  catch (e) {
+    await sentryError("crash", e);
+    responseStream.write((e as any).message)
+    responseStream.end()
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: (e as any).message }),
+    };
+  }
+};

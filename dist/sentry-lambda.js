@@ -89,4 +89,19 @@ export let withSentry = async (block) => {
         };
     }
 };
+export let withStreamingSentry = async (responseStream, block) => {
+    try {
+        let result = await block();
+        return result;
+    }
+    catch (e) {
+        await sentryError("crash", e);
+        responseStream.write(e.message);
+        responseStream.end();
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: e.message }),
+        };
+    }
+};
 //# sourceMappingURL=sentry-lambda.js.map
