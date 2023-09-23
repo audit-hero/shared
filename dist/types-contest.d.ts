@@ -8,6 +8,7 @@ export type Tag = TagTuple[number];
 export type Contest = {
     pk: string;
     sk: string;
+    readme: string;
     url: string;
     start_date: number;
     end_date: number;

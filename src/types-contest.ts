@@ -11,6 +11,7 @@ export type Tag = TagTuple[number]
 export type Contest = {
   pk: string,
   sk: string,
+  readme: string, // where this information was parsed from
   url: string,
   start_date: number,
   end_date: number,
