@@ -19,7 +19,7 @@ export let sentryMessage = async (message, level = "info") => {
     };
     await sendRequest(event);
 };
-export let sentryError = async (message, payload, sentryInterval = undefined) => {
+export let sentryError = async (message, payload, sentryInterval) => {
     if (sentryInterval == "daily" && new Date().getHours() != 0) {
         console.log(message, payload);
         console.log("skipping sentry error, only sending daily");
