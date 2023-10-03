@@ -33,7 +33,9 @@ export let sentryError = async (message, payload, sentryInterval) => {
             tags: {
                 module: projectName
             },
-            errors: [payload]
+            ...(payload && {
+                errors: [payload]
+            })
         }
     };
     await sendRequest(event);

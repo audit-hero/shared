@@ -62,7 +62,9 @@ export let sentryError = async (
       tags: {
         module: projectName
       },
-      errors: [payload]
+      ...(payload && {
+        errors: [payload]
+      })
     }
   }
 
