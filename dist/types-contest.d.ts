@@ -20,6 +20,7 @@ export type Contest = {
     repo_urls?: string[];
     doc_urls?: string[];
     em_stored?: number;
+    cl_stored?: number;
     analyze_result?: {
         total_nsloc: number;
     };

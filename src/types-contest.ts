@@ -1,29 +1,59 @@
 import { FindingEmbMeta } from "./types-finding.js"
 
-export const ALL_PLATFORMS = ["c4", "sherlock", "codehawks", "hats"]
+export const ALL_PLATFORMS = ["c4", "sherlock", "codehawks", "hats", "cantina"]
 export type PlatformTuple = typeof ALL_PLATFORMS
 export type Platform = PlatformTuple[number]
 
-export const ALL_TAGS = ["none", "712", "721", "1967", "1155", "4626", "erc20", "nft", "bridge", "proxy", "l2", "domain_separator", "division", "initializ", "slippage", " amm ", "lend", "borrow", "swap", "stable", "curve", "token", "ecrecover", "foundry", "reentrancy", "flash loan", "weth", "fee on transfer"]
+export const ALL_TAGS = [
+  "none",
+  "712",
+  "721",
+  "1967",
+  "1155",
+  "4626",
+  "erc20",
+  "nft",
+  "bridge",
+  "proxy",
+  "l2",
+  "domain_separator",
+  "division",
+  "initializ",
+  "slippage",
+  " amm ",
+  "lend",
+  "borrow",
+  "swap",
+  "stable",
+  "curve",
+  "token",
+  "ecrecover",
+  "foundry",
+  "reentrancy",
+  "flash loan",
+  "weth",
+  "fee on transfer",
+]
 export type TagTuple = typeof ALL_TAGS
 export type Tag = TagTuple[number]
 
 export type Contest = {
-  pk: string,
-  sk: string,
-  readme: string, // where this information was parsed from
-  url: string,
-  start_date: number,
-  end_date: number,
+  pk: string
+  sk: string
+  readme: string // where this information was parsed from
+  url: string
+  start_date: number
+  end_date: number
   // = end_date > current_date (can be created but not running)
-  active: number,
+  active: number
   status: Status
-  prize: string, // could be eth or usd
+  prize: string // could be eth or usd
   platform: Platform
   tags: Tag[]
-  repo_urls?: string[];
-  doc_urls?: string[];
+  repo_urls?: string[]
+  doc_urls?: string[]
   em_stored?: number
+  cl_stored?: number
   analyze_result?: {
     total_nsloc: number
   }
@@ -32,12 +62,12 @@ export type Contest = {
 export type Status = "created" | "active" | "judging" | "finished"
 
 export type ContestEmbeddings = {
-  pk: string,
-  sk: string,
-  emb_q: string,
-  chat_q: string,
-  k: number,
-  emb_res: Document[], // string[]
+  pk: string
+  sk: string
+  emb_q: string
+  chat_q: string
+  k: number
+  emb_res: Document[] // string[]
   chat_res: string
 }
 
@@ -61,20 +91,20 @@ export type ContestModule = {
 }
 
 export type Document = {
-  pageContent: string;
-  metadata: Metadata;
-};
+  pageContent: string
+  metadata: Metadata
+}
 
 export type FindingDocument = Document & {
-  metadata: FindingEmbMeta;
+  metadata: FindingEmbMeta
 }
 
 export type Metadata = {
-  source: string;
+  source: string
   loc: {
-      lines: {
-          from: number;
-          to: number;
-      };
-  };
-};
+    lines: {
+      from: number
+      to: number
+    }
+  }
+}
