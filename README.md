@@ -1,1 +1,1 @@
-Shared types between Audit Hero projects
+Shared types between Audit Hero projects.
