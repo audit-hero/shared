@@ -37,6 +37,7 @@ export type ContestEmbeddings = {
 };
 export type ContestWithModules = Contest & {
     modules: ContestModule[];
+    allModules: ContestModule[];
     auditTime?: number;
     loc?: number;
 };
