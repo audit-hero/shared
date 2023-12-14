@@ -37,15 +37,15 @@ export type ContestEmbeddings = {
 };
 export type ContestWithModules = Contest & {
     modules: ContestModule[];
-    allModules: ContestModule[];
-    auditTime?: number;
+    all_modules: ContestModule[];
+    audit_time?: number;
     loc?: number;
 };
 export type ContestModule = {
     name: string;
     contest: string;
     active: number;
-    auditTime?: number;
+    audit_time?: number;
     link_in_md?: string;
     url?: string;
     path?: string;

@@ -73,8 +73,8 @@ export type ContestEmbeddings = {
 
 export type ContestWithModules = Contest & {
   modules: ContestModule[] // sol files
-  allModules: ContestModule[] // all files
-  auditTime?: number
+  all_modules: ContestModule[] // all files
+  audit_time?: number
   loc?: number
 }
 
@@ -83,8 +83,7 @@ export type ContestModule = {
   name: string
   contest: string
   active: number
-  // approximate audit time in seconds
-  auditTime?: number
+  audit_time?: number
   link_in_md?: string
   url?: string
   path?: string
