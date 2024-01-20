@@ -55,11 +55,16 @@ export type Document = {
     pageContent: string;
     metadata: Metadata;
 };
+export type DocumentWithLoc = Document & {
+    metadata: MetadataWithLoc;
+};
 export type FindingDocument = Document & {
     metadata: FindingEmbMeta;
 };
 export type Metadata = Record<string, any> & {
     source: string;
+};
+export type MetadataWithLoc = Metadata & {
     loc: {
         lines: {
             from: number;
