@@ -58,7 +58,7 @@ export type Document = {
 export type FindingDocument = Document & {
     metadata: FindingEmbMeta;
 };
-export type Metadata = {
+export type Metadata = Record<string, any> & {
     source: string;
     loc: {
         lines: {
