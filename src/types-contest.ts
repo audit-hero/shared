@@ -55,7 +55,7 @@ export type Contest = {
   em_stored?: number
   cl_stored?: number
   analyze_result?: {
-    total_nsloc: number
+    total_nloc: number
   }
 }
 
@@ -83,8 +83,6 @@ export type ContestModule = {
   name: string
   contest: string
   active: number
-  audit_time?: number
-  link_in_md?: string
   url?: string
   path?: string
   loc?: number
