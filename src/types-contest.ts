@@ -72,7 +72,6 @@ export type ContestEmbeddings = {
 }
 
 export type ContestWithModules = Contest & {
-  modules: ContestModule[] // sol files
   all_modules: ContestModule[] // all files
   audit_time?: number
   loc?: number
