@@ -36,7 +36,7 @@ export type ContestEmbeddings = {
     chat_res: string;
 };
 export type ContestWithModules = Contest & {
-    all_modules: ContestModule[];
+    modules: ContestModule[];
     audit_time?: number;
     loc?: number;
 };

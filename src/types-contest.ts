@@ -72,7 +72,7 @@ export type ContestEmbeddings = {
 }
 
 export type ContestWithModules = Contest & {
-  all_modules: ContestModule[] // all files
+  modules: ContestModule[] // all files
   audit_time?: number
   loc?: number
 }
