@@ -192,7 +192,7 @@ export let withStreamingSentry = async (props: {
 }
 
 export const isCorsRequest = (event: any) => {
-  if (event.httpMethod === "OPTIONS") {
+  if (event?.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
       body: JSON.stringify(""),
