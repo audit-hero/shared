@@ -37,6 +37,19 @@ export const ALL_TAGS = [
 export type TagTuple = typeof ALL_TAGS
 export type Tag = TagTuple[number]
 
+export type AnalyzeResult = {
+  total_nloc: number
+  // file extension
+  modules: {
+    [key: string]: ModuleTypeInfo
+  }
+}
+
+export type ModuleTypeInfo = {
+  count: number
+  nloc: number
+}
+
 export type Contest = {
   pk: string
   sk: string
@@ -52,11 +65,10 @@ export type Contest = {
   tags: Tag[]
   repo_urls?: string[]
   doc_urls?: string[]
-  em_stored?: number
-  cl_stored?: number
-  analyze_result?: {
-    total_nloc: number
-  }
+  em_stored?: number // embeddings stored
+  cl_stored?: number // checklist stored
+  fl_stored?: number // in scope files stored
+  analyze_result?: AnalyzeResult
 }
 
 export type Status = "created" | "active" | "judging" | "finished"

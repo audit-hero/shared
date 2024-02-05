@@ -5,6 +5,16 @@ export type Platform = PlatformTuple[number];
 export declare const ALL_TAGS: string[];
 export type TagTuple = typeof ALL_TAGS;
 export type Tag = TagTuple[number];
+export type AnalyzeResult = {
+    total_nloc: number;
+    modules: {
+        [key: string]: ModuleTypeInfo;
+    };
+};
+export type ModuleTypeInfo = {
+    count: number;
+    nloc: number;
+};
 export type Contest = {
     pk: string;
     sk: string;
@@ -21,9 +31,8 @@ export type Contest = {
     doc_urls?: string[];
     em_stored?: number;
     cl_stored?: number;
-    analyze_result?: {
-        total_nloc: number;
-    };
+    fl_stored?: number;
+    analyze_result?: AnalyzeResult;
 };
 export type Status = "created" | "active" | "judging" | "finished";
 export type ContestEmbeddings = {
