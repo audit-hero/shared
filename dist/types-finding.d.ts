@@ -1,4 +1,5 @@
-import { Metadata, Platform, Tag } from "./types-contest.js";
+import { Platform, Tag } from "./types-contest.js";
+import { Metadata } from "text-splitter";
 export declare enum Severity {
     NON_CRITICAL = 0,
     LOW = 1,

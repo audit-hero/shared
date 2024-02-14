@@ -1,15 +1,19 @@
-import { Metadata, Platform, Tag } from "./types-contest.js"
+import { Platform, Tag } from "./types-contest.js"
+import { Metadata } from "text-splitter"
 
 export enum Severity {
-  NON_CRITICAL, LOW, MEDIUM, HIGH
+  NON_CRITICAL,
+  LOW,
+  MEDIUM,
+  HIGH,
 }
 
 export type FindingSource = Platform
 
 // first url is fractional
 export type Finding = {
-  pk: string,
-  name: string,
+  pk: string
+  name: string
   platform: FindingSource
   severity?: Severity
   tags: Tag[] // always include at least "none"
@@ -19,10 +23,10 @@ export type Finding = {
 }
 
 export type FindingEmbMeta = Metadata & {
-  platform: Platform,
-  c_date: number,
-  c_name: string,
-  severity?: Severity,
+  platform: Platform
+  c_date: number
+  c_name: string
+  severity?: Severity
 }
 
 // latest findings

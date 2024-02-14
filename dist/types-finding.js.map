@@ -1,1 +1,1 @@
-{"version":3,"file":"types-finding.js","sourceRoot":"","sources":["../src/types-finding.ts"],"names":[],"mappings":"AAEA,MAAM,CAAN,IAAY,QAEX;AAFD,WAAY,QAAQ;IAClB,uDAAY,CAAA;IAAE,qCAAG,CAAA;IAAE,2CAAM,CAAA;IAAE,uCAAI,CAAA;AACjC,CAAC,EAFW,QAAQ,KAAR,QAAQ,QAEnB"}
+{"version":3,"file":"types-finding.js","sourceRoot":"","sources":["../src/types-finding.ts"],"names":[],"mappings":"AAGA,MAAM,CAAN,IAAY,QAKX;AALD,WAAY,QAAQ;IAClB,uDAAY,CAAA;IACZ,qCAAG,CAAA;IACH,2CAAM,CAAA;IACN,uCAAI,CAAA;AACN,CAAC,EALW,QAAQ,KAAR,QAAQ,QAKnB"}

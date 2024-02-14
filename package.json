@@ -6,11 +6,15 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "test" : ""
+    "test": "yarn vitest run"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
+  },
+  "dependencies": {
+    "text-splitter": "tonisives/text-splitter#commit=c44985757b5aaa7f262041a55dfccd49e300db58"
   }
 }
