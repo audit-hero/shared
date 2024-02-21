@@ -1,4 +1,4 @@
-export const ALL_PLATFORMS = ["c4", "sherlock", "codehawks", "hats", "cantina"];
+export const ALL_PLATFORMS = ["c4", "sherlock", "codehawks", "hats", "cantina", "immunefi"];
 export const ALL_TAGS = [
     "none",
     "712",
