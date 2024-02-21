@@ -1,6 +1,14 @@
 import { FindingEmbMeta } from "./types-finding.js"
+import { Document } from "text-splitter"
 
-export const ALL_PLATFORMS = ["c4", "sherlock", "codehawks", "hats", "cantina", "immunefi"]
+export const ALL_PLATFORMS = [
+  "c4",
+  "sherlock",
+  "codehawks",
+  "hats",
+  "cantina",
+  "immunefi",
+]
 export type PlatformTuple = typeof ALL_PLATFORMS
 export type Platform = PlatformTuple[number]
 

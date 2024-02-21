@@ -1,4 +1,5 @@
 import { FindingEmbMeta } from "./types-finding.js";
+import { Document } from "text-splitter";
 export declare const ALL_PLATFORMS: string[];
 export type PlatformTuple = typeof ALL_PLATFORMS;
 export type Platform = PlatformTuple[number];
