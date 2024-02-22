@@ -96,7 +96,9 @@ let sendRequest = async (event: Input) => {
     errorStr = `${JSON.stringify(event.event, null, 2)}`
   }
 
-  console.error(`sending message to sentry:\n${errorStr}`)
+  console.error(
+    `sending message to sentry:\n${event.event.message}\n${errorStr}`
+  )
 
   if (!process.env.SENTRY_DSN) {
     console.log("no sentry dsn, skipping")
