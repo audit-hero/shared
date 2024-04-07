@@ -6,7 +6,7 @@ export declare let sentryError: (message: string, payload?: any, sentryInterval?
 export declare let withSentry: (props: {
     name: string;
     event: any;
-    block: () => Promise<any>;
+    block: (event: any) => Promise<any>;
 }) => Promise<any>;
 /**
  *

@@ -87,7 +87,7 @@ export let withSentry = async (props) => {
         if (corsResponse) {
             return corsResponse;
         }
-        return await block();
+        return await block(event);
     }
     catch (e) {
         sentryError(`Unexpected error in: ${projectName}`, e);

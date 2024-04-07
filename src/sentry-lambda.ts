@@ -134,7 +134,7 @@ let sendRequest = async (event: Input) => {
 export let withSentry = async (props: {
   name: string
   event: any
-  block: () => Promise<any>
+  block: (event: any) => Promise<any>
 }): Promise<any> => {
   let { name, event, block } = props
 
@@ -147,7 +147,7 @@ export let withSentry = async (props: {
       return corsResponse
     }
 
-    return await block()
+    return await block(event)
   } catch (e) {
     sentryError(`Unexpected error in: ${projectName}`, e)
 
