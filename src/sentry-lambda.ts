@@ -117,18 +117,22 @@ let sendRequest = async (event: Input) => {
   }
 
   lastSendTime = new Date().getTime()
-  let response = await fetch(process.env.SENTRY_URL ?? "", {
+  await fetch(process.env.SENTRY_URL ?? "", {
     method: "POST",
     body: json,
   })
-
-  if (!response.ok) {
-    console.log(
-      `failed to send message to sentry ${response.status} ${
-        response.statusText
-      } ${JSON.stringify(response.body)}}`
-    )
-  }
+    .then((response) => {
+      if (!response.ok) {
+        console.log(
+          `failed to send message to sentry ${response.status} ${
+            response.statusText
+          } ${JSON.stringify(response.body)}}`
+        )
+      }
+    })
+    .catch((e) => {
+      console.log(`failed to send message to sentry ${e} ${e.stack}`)
+    })
 }
 
 export let withSentry = async (props: {
