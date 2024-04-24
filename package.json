@@ -2,6 +2,10 @@
   "name": "ah-shared",
   "version": "0.0.0",
   "exports": {
+    "./either": {
+      "import": "./dist/either/index.js",
+      "types": "./dist/either/index.d.ts"
+    },
     "./sentry/lambda-either": {
       "import": "./dist/sentry/sentry-lambda-either.js",
       "types": "./dist/sentry/sentry-lambda-either.d.ts"

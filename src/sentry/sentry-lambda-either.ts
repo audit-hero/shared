@@ -4,6 +4,7 @@ import {
   setSentryProjectName,
 } from "./sentry.js"
 import { SimpleError } from "../types.js"
+import { ApiLeft } from "../either/either.js"
 
 // We always return 200 if user reaches our service, but
 //  {_tag: Right, right: A} if there is no error
@@ -14,16 +15,6 @@ import { SimpleError } from "../types.js"
 //      _tag is a right or left.
 //  - We don't have to think about which status codes to use. Generally, error string is enough
 //  - In lambda streaming, you cannot test status codes locally
-
-export interface Left<E> {
-  readonly _tag: "Left"
-  readonly left: E
-}
-
-export interface Right<A> {
-  readonly _tag: "Right"
-  readonly right: A
-}
 
 export let withSentry = async (props: {
   name: string
@@ -45,11 +36,11 @@ export let withSentry = async (props: {
   } catch (e) {
     sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 
-    let body: Left<SimpleError> = {
-      _tag: "Left",
-      left: { 
+    let body: ApiLeft<SimpleError> = {
+      type: "left",
+      left: {
         code: 500,
-        error: (e as any).message 
+        error: (e as any).message,
       },
     }
 
@@ -86,8 +77,8 @@ export let withStreamingSentry = async (props: {
   } catch (e) {
     sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 
-    let body: Left<SimpleError> = {
-      _tag: "Left",
+    let body: ApiLeft<SimpleError> = {
+      type: "left",
       left: {
         code: 500,
         error: (e as any).message,
