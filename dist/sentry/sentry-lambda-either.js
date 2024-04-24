@@ -13,7 +13,10 @@ export let withSentry = async (props) => {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
         let body = {
             _tag: "Left",
-            left: { error: e.message },
+            left: {
+                code: 500,
+                error: e.message
+            },
         };
         return {
             statusCode: 200,
@@ -40,7 +43,10 @@ export let withStreamingSentry = async (props) => {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
         let body = {
             _tag: "Left",
-            left: { error: e.message },
+            left: {
+                code: 500,
+                error: e.message,
+            },
         };
         stream.write(JSON.stringify(body));
         stream.end();

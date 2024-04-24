@@ -47,7 +47,10 @@ export let withSentry = async (props: {
 
     let body: Left<SimpleError> = {
       _tag: "Left",
-      left: { error: (e as any).message },
+      left: { 
+        code: 500,
+        error: (e as any).message 
+      },
     }
 
     return {
@@ -85,7 +88,10 @@ export let withStreamingSentry = async (props: {
 
     let body: Left<SimpleError> = {
       _tag: "Left",
-      left: { error: (e as any).message },
+      left: {
+        code: 500,
+        error: (e as any).message,
+      },
     }
 
     stream.write(JSON.stringify(body))
