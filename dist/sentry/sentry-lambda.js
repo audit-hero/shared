@@ -1,4 +1,4 @@
-import { getSentryProjectName, sentryError, setSentryProjectName, } from "./sentry-lambda.js";
+import { setSentryProjectName, sentryError, getSentryProjectName, } from "./sentry.js";
 export let withSentry = async (props) => {
     let { name, event, block } = props;
     try {
@@ -11,13 +11,9 @@ export let withSentry = async (props) => {
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
-        let body = {
-            _tag: "Left",
-            left: { error: e.message },
-        };
         return {
-            statusCode: 200,
-            body: JSON.stringify(body),
+            statusCode: 500,
+            body: JSON.stringify({ error: e.message }),
         };
     }
 };
@@ -38,12 +34,12 @@ export let withStreamingSentry = async (props) => {
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
-        let body = {
-            _tag: "Left",
-            left: { error: e.message },
-        };
-        stream.write(JSON.stringify(body));
+        stream.write(e.message);
         stream.end();
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: e.message }),
+        };
     }
 };
 export const isCorsRequest = (event) => {
@@ -61,4 +57,4 @@ export const corsHeaders = {
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
     "Access-Control-Allow-Credentials": true,
 };
-//# sourceMappingURL=sentry-lambda-either.js.map
+//# sourceMappingURL=sentry-lambda.js.map

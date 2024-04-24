@@ -1,28 +1,8 @@
 import {
-  getSentryProjectName,
-  sentryError,
   setSentryProjectName,
-} from "./sentry-lambda.js"
-import { SimpleError } from "./types.js"
-
-// We always return 200 if user reaches our service, but 
-//  {_tag: Right, right: A} if there is no error
-//  {_tag: Left, left: {code?:number, error: string}} if there is a handled error
-
-// why use this logic? 
-//  Users don't have to think about HTTP status codes, they just have to check whether the response
-//  _tag is a right or left.
-//  In lambda streaming, you cannot test status codes locally
-
-export interface Left<E> {
-  readonly _tag: "Left"
-  readonly left: E
-}
-
-export interface Right<A> {
-  readonly _tag: "Right"
-  readonly right: A
-}
+  sentryError,
+  getSentryProjectName,
+} from "./sentry.js"
 
 export let withSentry = async (props: {
   name: string
@@ -44,14 +24,9 @@ export let withSentry = async (props: {
   } catch (e) {
     sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 
-    let body: Left<SimpleError> = {
-      _tag: "Left",
-      left: { error: (e as any).message },
-    }
-
     return {
-      statusCode: 200,
-      body: JSON.stringify(body),
+      statusCode: 500,
+      body: JSON.stringify({ error: (e as any).message }),
     }
   }
 }
@@ -81,14 +56,13 @@ export let withStreamingSentry = async (props: {
     return await block()
   } catch (e) {
     sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
-
-    let body: Left<SimpleError> = {
-      _tag: "Left",
-      left: { error: (e as any).message },
-    }
-
-    stream.write(JSON.stringify(body))
+    stream.write((e as any).message)
     stream.end()
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: (e as any).message }),
+    }
   }
 }
 
