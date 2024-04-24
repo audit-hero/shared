@@ -3,16 +3,16 @@
   "version": "0.0.0",
   "exports": {
     "./sentry/lambda-either": {
-      "import": "./dist/sentry-lambda-either.js",
-      "types": "./dist/sentry-lambda-either.d.ts"
+      "import": "./dist/sentry/sentry-lambda-either.js",
+      "types": "./dist/sentry/sentry-lambda-either.d.ts"
     },
     "./sentry/lambda": {
-      "import": "./dist/sentry-lambda.js",
-      "types": "./dist/sentry-lambda.d.ts"
+      "import": "./dist/sentry/sentry-lambda.js",
+      "types": "./dist/sentry/sentry-lambda.d.ts"
     },
     "./sentry": {
-      "import": "./dist/sentry.js",
-      "types": "./dist/sentry.d.ts"
+      "import": "./dist/sentry/sentry.js",
+      "types": "./dist/sentry/sentry.d.ts"
     },
     ".": {
       "import": "./dist/index.js",
