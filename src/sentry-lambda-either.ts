@@ -8,7 +8,11 @@ import { SimpleError } from "./types.js"
 // We always return 200 if user reaches our service, but 
 //  {_tag: Right, right: A} if there is no error
 //  {_tag: Left, left: {code?:number, error: string}} if there is a handled error
-// User still needs to check for 404 or 500 errors
+
+// why use this logic? 
+//  Users don't have to think about HTTP status codes, they just have to check whether the response
+//  _tag is a right or left.
+//  In lambda streaming, you cannot test status codes locally
 
 export interface Left<E> {
   readonly _tag: "Left"

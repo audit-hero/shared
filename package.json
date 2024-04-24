@@ -1,8 +1,20 @@
 {
   "name": "ah-shared",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    "./sentry-either": {
+      "import": "./dist/sentry-lambda-either.js",
+      "types": "./dist/sentry-lambda-either.d.ts"
+    },
+    "./sentry": {
+      "import": "./dist/sentry-lambda.js",
+      "types": "./dist/sentry-lambda.d.ts"
+    },
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "type": "module",
   "scripts": {
     "build": "tsc",

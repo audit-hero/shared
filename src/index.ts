@@ -1,4 +1,3 @@
-export * from "./sentry-lambda.js"
 export * from "./utils.js"
 
 export * from "./types-contest.js"
