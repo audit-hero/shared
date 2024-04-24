@@ -7,6 +7,10 @@ export let setSentryProjectName = (name: string) => {
   projectName = name
 }
 
+export let getSentryProjectName = () => {
+  return projectName
+}
+
 let lastSendTime = 0
 let interval = 15_000
 

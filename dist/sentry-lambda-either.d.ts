@@ -1,9 +1,11 @@
-export declare let setSentryProjectName: (name: string) => void;
-export declare let getSentryProjectName: () => string;
-export type SentryLevel = "error" | "warning" | "info" | "debug" | "fatal";
-export type SentryInterval = "daily" | "hourly";
-export declare let sentryMessage: (message: string, level?: SentryLevel) => Promise<void>;
-export declare let sentryError: (message: string, payload?: any, sentryInterval?: SentryInterval) => Promise<void>;
+export interface Left<E> {
+    readonly _tag: "Left";
+    readonly left: E;
+}
+export interface Right<A> {
+    readonly _tag: "Right";
+    readonly right: A;
+}
 export declare let withSentry: (props: {
     name: string;
     event: any;

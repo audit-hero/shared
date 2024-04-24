@@ -4,6 +4,9 @@ let projectName = "sentry-project";
 export let setSentryProjectName = (name) => {
     projectName = name;
 };
+export let getSentryProjectName = () => {
+    return projectName;
+};
 let lastSendTime = 0;
 let interval = 15000;
 export let sentryMessage = async (message, level = "info") => {
