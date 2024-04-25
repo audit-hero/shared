@@ -33,7 +33,7 @@ export let fpTsEitherToApiEither = <E, A>(
 }
 
 export let toApiEither = <E, A>(e: FpTsEither<E, A>): string =>
-  JSON.stringify(toApiEither(e))
+  JSON.stringify(fpTsEitherToApiEither(e))
 
 export let fromApiEither = <E, A>(s: string): FpTsEither<E, A> =>
   apiEitherToFpTsEither(JSON.parse(s))

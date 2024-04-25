@@ -22,6 +22,6 @@ export let fpTsEitherToApiEither = (e) => {
         right: e.right,
     };
 };
-export let toApiEither = (e) => JSON.stringify(toApiEither(e));
+export let toApiEither = (e) => JSON.stringify(fpTsEitherToApiEither(e));
 export let fromApiEither = (s) => apiEitherToFpTsEither(JSON.parse(s));
 //# sourceMappingURL=transform.js.map
