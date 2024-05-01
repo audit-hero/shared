@@ -6,14 +6,6 @@
       "import": "./dist/either/index.js",
       "types": "./dist/either/index.d.ts"
     },
-    "./sentry/lambda-either": {
-      "import": "./dist/sentry/sentry-lambda-either.js",
-      "types": "./dist/sentry/sentry-lambda-either.d.ts"
-    },
-    "./sentry/lambda": {
-      "import": "./dist/sentry/sentry-lambda.js",
-      "types": "./dist/sentry/sentry-lambda.d.ts"
-    },
     "./sentry": {
       "import": "./dist/sentry/sentry.js",
       "types": "./dist/sentry/sentry.d.ts"

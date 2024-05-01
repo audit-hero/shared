@@ -87,4 +87,7 @@ let sendRequest = async (event) => {
         console.log(`failed to send message to sentry ${e} ${e.stack}`);
     });
 };
+export * from "./sentry-lambda.js";
+export * from "./sentry-lambda-either.js";
+export * from "./corsRequest.js";
 //# sourceMappingURL=sentry.js.map

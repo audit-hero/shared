@@ -1,5 +1,6 @@
 import {
   getSentryProjectName,
+  isCorsRequest,
   sentryError,
   setSentryProjectName,
 } from "./sentry.js"
@@ -16,7 +17,7 @@ import { ApiLeft } from "../either/either.js"
 //  - We don't have to think about which status codes to use. Generally, error string is enough
 //  - In lambda streaming, you cannot test status codes locally
 
-export let withSentry = async (props: {
+export let withSentryE = async (props: {
   name: string
   event: any
   block: (event: any) => Promise<any>
@@ -55,7 +56,7 @@ export let withSentry = async (props: {
  *
  * Sets sentry project name, answers cors requests, and sends uncaught error to sentry if it occurs
  */
-export let withStreamingSentry = async (props: {
+export let withStreamingSentryE = async (props: {
   name: string
   event: any
   stream: any
@@ -88,21 +89,4 @@ export let withStreamingSentry = async (props: {
     stream.write(JSON.stringify(body))
     stream.end()
   }
-}
-
-export const isCorsRequest = (event: any) => {
-  if (event?.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      body: JSON.stringify(""),
-      headers: corsHeaders,
-    }
-  }
-}
-export const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-  "Access-Control-Allow-Credentials": true,
 }
