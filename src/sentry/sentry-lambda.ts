@@ -6,7 +6,7 @@ import {
 } from "./sentry.js"
 
 //@ts-ignore
-let awslambda = awslambda
+let lambda = awslambda
 
 export let withSentry = async (props: {
   name: string
@@ -53,12 +53,12 @@ export let withStreamingSentry = async (props: {
     let corsResponse = isCorsRequest(event)
 
     if (corsResponse) {
-      stream = awslambda.HttpResponseStream.from(stream, corsResponse)
+      stream = lambda.HttpResponseStream.from(stream, corsResponse)
       stream.write("")
       stream.end()
       return
     } else {
-      stream = awslambda.HttpResponseStream.from(stream, {
+      stream = lambda.HttpResponseStream.from(stream, {
         statusCode: 200,
       })
     }
@@ -67,7 +67,7 @@ export let withStreamingSentry = async (props: {
   } catch (e) {
     sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 
-    stream = awslambda.HttpResponseStream.from(stream, {
+    stream = lambda.HttpResponseStream.from(stream, {
       statusCode: 500,
     })
 
