@@ -5,6 +5,9 @@ import {
   isCorsRequest,
 } from "./sentry.js"
 
+//@ts-ignore
+let awslambda = awslambda
+
 export let withSentry = async (props: {
   name: string
   event: any
@@ -50,19 +53,25 @@ export let withStreamingSentry = async (props: {
     let corsResponse = isCorsRequest(event)
 
     if (corsResponse) {
+      stream = awslambda.HttpResponseStream.from(stream, corsResponse)
+      stream.write("")
       stream.end()
-      return corsResponse
+      return
+    } else {
+      stream = awslambda.HttpResponseStream.from(stream, {
+        statusCode: 200,
+      })
     }
 
-    return await block()
+    await block()
   } catch (e) {
     sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
+
+    stream = awslambda.HttpResponseStream.from(stream, {
+      statusCode: 500,
+    })
+
     stream.write((e as any).message)
     stream.end()
-
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: (e as any).message }),
-    }
   }
 }
