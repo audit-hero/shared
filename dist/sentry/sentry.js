@@ -90,4 +90,5 @@ let sendRequest = async (event) => {
 export * from "./sentry-lambda.js";
 export * from "./sentry-lambda-either.js";
 export * from "./corsRequest.js";
+export * from "./types.js";
 //# sourceMappingURL=sentry.js.map
