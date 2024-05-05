@@ -1,15 +1,9 @@
-export declare let withSentry: (props: {
-    name: string;
-    event: any;
-    block: (event: any) => Promise<any>;
-}) => Promise<any>;
+import { LambdaSentryProps, StreamingSentryProps, StreamingRequestHandler } from "./types.js";
+export declare let withSentry: (props: LambdaSentryProps) => Promise<any>;
 /**
  *
  * Sets sentry project name, answers cors requests, and sends uncaught error to sentry if it occurs
+ *
+ * Also, allows local testing with lambda-stream lib
  */
-export declare let withStreamingSentry: (props: {
-    name: string;
-    event: any;
-    stream: any;
-    block: () => Promise<any>;
-}) => Promise<any>;
+export declare let withStreamingSentry: (props: StreamingSentryProps) => StreamingRequestHandler;

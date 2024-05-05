@@ -4,74 +4,79 @@ import {
   getSentryProjectName,
   isCorsRequest,
 } from "./sentry.js"
+import { APIGatewayProxyEventV2 } from "aws-lambda"
+import { streamify } from "../lambda-stream/index.js"
+import { getAwslambda } from "./utils.js"
+import {
+  LambdaSentryProps,
+  StreamingSentryProps,
+  StreamingRequestHandler,
+} from "./types.js"
 
-//@ts-ignore
-let lambda = awslambda
+let lambda = getAwslambda()
 
-export let withSentry = async (props: {
-  name: string
-  event: any
-  block: (event: any) => Promise<any>
-}): Promise<any> => {
-  let { name, event, block } = props
+export let withSentry =
+  async (props: LambdaSentryProps): Promise<any> =>
+  async (event: APIGatewayProxyEventV2) => {
+    let { name, handler } = props
 
-  try {
-    setSentryProjectName(name)
+    try {
+      setSentryProjectName(name)
 
-    let corsResponse = isCorsRequest(event)
+      let corsResponse = isCorsRequest(event)
 
-    if (corsResponse) {
-      return corsResponse
-    }
+      if (corsResponse) {
+        return corsResponse
+      }
 
-    return await block(event)
-  } catch (e) {
-    sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
+      return await handler(event)
+    } catch (e) {
+      sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: (e as any).message }),
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: (e as any).message }),
+      }
     }
   }
-}
 
 /**
  *
  * Sets sentry project name, answers cors requests, and sends uncaught error to sentry if it occurs
+ *
+ * Also, allows local testing with lambda-stream lib
  */
-export let withStreamingSentry = async (props: {
-  name: string
-  event: any
-  stream: any
-  block: () => Promise<any>
-}): Promise<any> => {
-  let { name, event, stream, block } = props
+export let withStreamingSentry = (
+  props: StreamingSentryProps
+): StreamingRequestHandler =>
+  streamify(async (event, stream) => {
+    const { name, handler } = props
 
-  try {
-    setSentryProjectName(name)
+    try {
+      setSentryProjectName(name)
 
-    let corsResponse = isCorsRequest(event)
+      let corsResponse = isCorsRequest(event)
 
-    if (corsResponse) {
-      stream = lambda.HttpResponseStream.from(stream, corsResponse)
-      stream.write("")
-      stream.end()
-      return
-    } else {
+      if (corsResponse) {
+        stream = lambda.HttpResponseStream.from(stream, corsResponse)
+        stream.write("")
+        stream.end()
+        return
+      } else {
+        stream = lambda.HttpResponseStream.from(stream, {
+          statusCode: 200,
+        })
+      }
+
+      await handler(event, stream)
+    } catch (e) {
+      sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
+
       stream = lambda.HttpResponseStream.from(stream, {
-        statusCode: 200,
+        statusCode: 500,
       })
+
+      stream.write((e as any).message)
+      stream.end()
     }
-
-    await block()
-  } catch (e) {
-    sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
-
-    stream = lambda.HttpResponseStream.from(stream, {
-      statusCode: 500,
-    })
-
-    stream.write((e as any).message)
-    stream.end()
-  }
-}
+  })

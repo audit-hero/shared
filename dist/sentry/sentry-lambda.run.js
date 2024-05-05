@@ -2,8 +2,7 @@ import { withSentry, withStreamingSentry } from "./sentry-lambda.js";
 let testWithSentry = async () => {
     withSentry({
         name: "test",
-        event: {},
-        block: async () => {
+        handler: async () => {
             throw new Error("testing");
         },
     });
@@ -11,12 +10,7 @@ let testWithSentry = async () => {
 let testWithStreamingSentry = async () => {
     withStreamingSentry({
         name: "test-stream",
-        event: {},
-        stream: {
-            write: (msg) => console.log(msg),
-            end: () => console.log("end"),
-        },
-        block: async () => {
+        handler: async () => {
             throw new Error("testing stream");
         },
     });

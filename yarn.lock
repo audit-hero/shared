@@ -377,6 +377,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/aws-lambda@npm:^8.10.137":
+  version: 8.10.137
+  resolution: "@types/aws-lambda@npm:8.10.137"
+  checksum: 32272f8e9dfa88987cbc68e999554225d07282c3a884d769cdec7116fcec1f7e716914a9ac0d8afd79cf6c955b09e7bcfa6258dda6daa3f532c7eb97bf47bff1
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:1.0.5, @types/estree@npm:^1.0.0":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
@@ -509,6 +516,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ah-shared@workspace:."
   dependencies:
+    "@types/aws-lambda": "npm:^8.10.137"
     "@types/node": "npm:^20.11.16"
     text-splitter: "tonisives/text-splitter#commit=c44985757b5aaa7f262041a55dfccd49e300db58"
     ts-node: "npm:^10.9.2"

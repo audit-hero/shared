@@ -1,15 +1,16 @@
 import { setSentryProjectName, sentryError, getSentryProjectName, isCorsRequest, } from "./sentry.js";
-//@ts-ignore
-let lambda = awslambda;
-export let withSentry = async (props) => {
-    let { name, event, block } = props;
+import { streamify } from "../lambda-stream/index.js";
+import { getAwslambda } from "./utils.js";
+let lambda = getAwslambda();
+export let withSentry = async (props) => async (event) => {
+    let { name, handler } = props;
     try {
         setSentryProjectName(name);
         let corsResponse = isCorsRequest(event);
         if (corsResponse) {
             return corsResponse;
         }
-        return await block(event);
+        return await handler(event);
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
@@ -22,9 +23,11 @@ export let withSentry = async (props) => {
 /**
  *
  * Sets sentry project name, answers cors requests, and sends uncaught error to sentry if it occurs
+ *
+ * Also, allows local testing with lambda-stream lib
  */
-export let withStreamingSentry = async (props) => {
-    let { name, event, stream, block } = props;
+export let withStreamingSentry = (props) => streamify(async (event, stream) => {
+    const { name, handler } = props;
     try {
         setSentryProjectName(name);
         let corsResponse = isCorsRequest(event);
@@ -39,7 +42,7 @@ export let withStreamingSentry = async (props) => {
                 statusCode: 200,
             });
         }
-        await block();
+        await handler(event, stream);
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
@@ -49,5 +52,5 @@ export let withStreamingSentry = async (props) => {
         stream.write(e.message);
         stream.end();
     }
-};
+});
 //# sourceMappingURL=sentry-lambda.js.map
