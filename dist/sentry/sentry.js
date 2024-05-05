@@ -91,4 +91,5 @@ export * from "./sentry-lambda.js";
 export * from "./sentry-lambda-either.js";
 export * from "./corsRequest.js";
 export * from "./types.js";
+export * from "../lambda-stream/ResponseStream.js";
 //# sourceMappingURL=sentry.js.map
