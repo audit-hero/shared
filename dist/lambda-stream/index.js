@@ -1,6 +1,6 @@
 import { ResponseStream } from "./ResponseStream.js";
 export function isInAWS() {
-    return (process.env._X_AMZN_TRACE_ID !== undefined &&
+    return (process.env.AWS_XRAY_DAEMON_ADDRESS !== undefined &&
         // @ts-ignore
         globalThis.awslambda !== undefined &&
         // @ts-ignore
