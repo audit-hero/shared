@@ -6,6 +6,7 @@ import {
   setSentryProjectName,
 } from "./sentry.js"
 import {
+  LambdaRequestHandler,
   LambdaSentryProps,
   StreamingRequestHandler,
   StreamingSentryProps,
@@ -33,7 +34,7 @@ type ApiLeft<T> = {
 //  ~~- In lambda streaming, you cannot test status codes locally~~
 
 export let withSentryE =
-  async (props: LambdaSentryProps): Promise<any> =>
+  (props: LambdaSentryProps): LambdaRequestHandler =>
   async (event: APIGatewayProxyEventV2) => {
     let { name, handler } = props
 

@@ -8,7 +8,7 @@ import { streamify } from "../lambda-stream/index.js";
 //      type is a right or left.
 //  - We don't have to think about which status codes to use. Generally, error string is enough
 //  ~~- In lambda streaming, you cannot test status codes locally~~
-export let withSentryE = async (props) => async (event) => {
+export let withSentryE = (props) => async (event) => {
     let { name, handler } = props;
     try {
         setSentryProjectName(name);
