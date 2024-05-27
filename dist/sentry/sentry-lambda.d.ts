@@ -1,5 +1,5 @@
-import { LambdaSentryProps, StreamingSentryProps, StreamingRequestHandler } from "./types.js";
-export declare let withSentry: (props: LambdaSentryProps) => Promise<any>;
+import { LambdaSentryProps, StreamingSentryProps, StreamingRequestHandler, LambdaRequestHandler } from "./types.js";
+export declare let withSentry: (props: LambdaSentryProps) => LambdaRequestHandler;
 /**
  *
  * Sets sentry project name, answers cors requests, and sends uncaught error to sentry if it occurs

@@ -11,12 +11,13 @@ import {
   LambdaSentryProps,
   StreamingSentryProps,
   StreamingRequestHandler,
+  LambdaRequestHandler,
 } from "./types.js"
 
 let lambda = getAwslambda()
 
 export let withSentry =
-  async (props: LambdaSentryProps): Promise<any> =>
+  (props: LambdaSentryProps): LambdaRequestHandler =>
   async (event: APIGatewayProxyEventV2) => {
     let { name, handler } = props
 

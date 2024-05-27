@@ -2,7 +2,7 @@ import { setSentryProjectName, sentryError, getSentryProjectName, isCorsRequest,
 import { streamify } from "../lambda-stream/index.js";
 import { getAwslambda } from "./utils.js";
 let lambda = getAwslambda();
-export let withSentry = async (props) => async (event) => {
+export let withSentry = (props) => async (event) => {
     let { name, handler } = props;
     try {
         setSentryProjectName(name);
