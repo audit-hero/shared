@@ -1,5 +1,6 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda"
 import {
+  addCorsHeaders,
   getCorsHeaders,
   getSentryProjectName,
   isCorsRequest,
@@ -48,15 +49,7 @@ export let withSentryE =
         return corsResponse
       }
 
-      return await handler(event).then((response: any) => {
-        return {
-          ...response,
-          headers: {
-            ...response.headers,
-            ...getCorsHeaders(event),
-          },
-        }
-      })
+      return await handler(event).then(addCorsHeaders(event))
     } catch (e) {
       sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 

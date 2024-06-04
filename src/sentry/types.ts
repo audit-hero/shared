@@ -1,4 +1,10 @@
-import { APIGatewayProxyEventV2, Callback, Context } from "aws-lambda"
+import {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
+  APIGatewayProxyStructuredResultV2,
+  Callback,
+  Context,
+} from "aws-lambda"
 import { ResponseStream } from "../lambda-stream/ResponseStream.js"
 
 export type LambdaSentryProps = {
@@ -8,7 +14,7 @@ export type LambdaSentryProps = {
 
 export type LambdaRequestHandler = (
   ev: APIGatewayProxyEventV2
-) => any | Promise<any>
+) => Promise<APIGatewayProxyResultV2>
 
 export type StreamingSentryProps = {
   name: string
@@ -20,6 +26,4 @@ export type StreamingRequestHandler = (
   streamResponse: ResponseStream,
   ctx?: Context,
   callback?: Callback
-) => any | Promise<any>
-
-
+) => Promise<APIGatewayProxyStructuredResultV2>

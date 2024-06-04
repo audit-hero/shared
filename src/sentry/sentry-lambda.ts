@@ -3,7 +3,7 @@ import {
   sentryError,
   getSentryProjectName,
   isCorsRequest,
-  getCorsHeaders,
+  addCorsHeaders,
 } from "./sentry.js"
 import { APIGatewayProxyEventV2 } from "aws-lambda"
 import { streamify } from "../lambda-stream/index.js"
@@ -31,15 +31,7 @@ export let withSentry =
         return corsResponse
       }
 
-      return await handler(event).then((response: any) => {
-        return {
-          ...response,
-          headers: {
-            ...response.headers,
-            ...getCorsHeaders(event),
-          },
-        }
-      })
+      return await handler(event).then(addCorsHeaders(event))
     } catch (e) {
       sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 
