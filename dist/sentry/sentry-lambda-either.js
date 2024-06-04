@@ -1,4 +1,4 @@
-import { getSentryProjectName, isCorsRequest, sentryError, setSentryProjectName, } from "./sentry.js";
+import { getCorsHeaders, getSentryProjectName, isCorsRequest, sentryError, setSentryProjectName, } from "./sentry.js";
 import { streamify } from "../lambda-stream/index.js";
 // We always return 200 if user reaches our service, but
 //  {type: "right", right: A} if there is no error
@@ -16,7 +16,15 @@ export let withSentryE = (props) => async (event) => {
         if (corsResponse) {
             return corsResponse;
         }
-        return await handler(event);
+        return await handler(event).then((response) => {
+            return {
+                ...response,
+                headers: {
+                    ...response.headers,
+                    ...getCorsHeaders(event),
+                },
+            };
+        });
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);

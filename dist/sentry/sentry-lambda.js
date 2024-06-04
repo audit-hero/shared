@@ -1,4 +1,4 @@
-import { setSentryProjectName, sentryError, getSentryProjectName, isCorsRequest, } from "./sentry.js";
+import { setSentryProjectName, sentryError, getSentryProjectName, isCorsRequest, getCorsHeaders, } from "./sentry.js";
 import { streamify } from "../lambda-stream/index.js";
 import { getAwslambda } from "./utils.js";
 let lambda = getAwslambda();
@@ -10,7 +10,15 @@ export let withSentry = (props) => async (event) => {
         if (corsResponse) {
             return corsResponse;
         }
-        return await handler(event);
+        return await handler(event).then((response) => {
+            return {
+                ...response,
+                headers: {
+                    ...response.headers,
+                    ...getCorsHeaders(event),
+                },
+            };
+        });
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);

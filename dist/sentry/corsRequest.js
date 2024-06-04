@@ -3,14 +3,18 @@ export const isCorsRequest = (event) => {
         return {
             statusCode: 200,
             body: JSON.stringify(""),
-            headers: corsHeaders,
+            headers: getCorsHeaders(event),
         };
     }
 };
-export const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-    "Access-Control-Allow-Credentials": true,
+export let getCorsHeaders = (event) => {
+    let headers = event.headers || {};
+    let origin = headers["Origin"] || headers["origin"] || "*";
+    return {
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Credentials": true,
+    };
 };
 //# sourceMappingURL=corsRequest.js.map
