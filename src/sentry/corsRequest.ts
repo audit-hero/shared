@@ -1,4 +1,5 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda"
+import { isInAWS } from "../lambda-stream/index.js";
 
 export const isCorsRequest = (event: APIGatewayProxyEventV2) => {
   if ((event as any)?.httpMethod === "OPTIONS") {
@@ -13,6 +14,8 @@ export const isCorsRequest = (event: APIGatewayProxyEventV2) => {
 export let addCorsHeaders =
   (event: APIGatewayProxyEventV2) =>
   (response: APIGatewayProxyResultV2): APIGatewayProxyResultV2 => {
+    if (isInAWS()) return response;
+
     if (typeof response === "string") {
       return {
         body: response,

@@ -1,3 +1,4 @@
+import { isInAWS } from "../lambda-stream/index.js";
 export const isCorsRequest = (event) => {
     if (event?.httpMethod === "OPTIONS") {
         return {
@@ -8,6 +9,8 @@ export const isCorsRequest = (event) => {
     }
 };
 export let addCorsHeaders = (event) => (response) => {
+    if (isInAWS())
+        return response;
     if (typeof response === "string") {
         return {
             body: response,
