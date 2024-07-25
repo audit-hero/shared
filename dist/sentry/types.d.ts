@@ -4,7 +4,7 @@ export type LambdaSentryProps = {
     name: string;
     handler: LambdaRequestHandler;
 };
-export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<APIGatewayProxyResultV2>;
+export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<APIGatewayProxyResultV2 | void>;
 export type StreamingSentryProps = {
     name: string;
     handler: StreamingRequestHandler;

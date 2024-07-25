@@ -1,4 +1,4 @@
-import { Platform, Tag } from "./types-contest.js"
+import { AnalyzeResult, Contest, Platform, Tag } from "./types-contest.js"
 import { Metadata } from "text-splitter"
 
 export enum Severity {
@@ -36,6 +36,8 @@ export type LatestContest = {
   c_url: string
   c_name: string
   c_platform: Platform
+  // it is possible that contest didn't parse, but findings were still found later
+  details?: Pick<Contest, "em_stored" | "cl_stored" | "fl_stored" | "analyze_result">
 }
 
 export type LatestContestWithFindings = {

@@ -1,7 +1,6 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda"
 import {
   addCorsHeaders,
-  getCorsHeaders,
   getSentryProjectName,
   isCorsRequest,
   sentryError,

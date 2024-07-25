@@ -1,4 +1,4 @@
-import { Platform, Tag } from "./types-contest.js";
+import { Contest, Platform, Tag } from "./types-contest.js";
 import { Metadata } from "text-splitter";
 export declare enum Severity {
     NON_CRITICAL = 0,
@@ -28,6 +28,7 @@ export type LatestContest = {
     c_url: string;
     c_name: string;
     c_platform: Platform;
+    details?: Pick<Contest, "em_stored" | "cl_stored" | "fl_stored" | "analyze_result">;
 };
 export type LatestContestWithFindings = {
     contest: LatestContest;
