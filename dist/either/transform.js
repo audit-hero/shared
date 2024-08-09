@@ -12,9 +12,24 @@ export let apiEitherToFpTsEither = (e) => {
 };
 export let fpTsEitherToApiEither = (e) => {
     if (e._tag === "Left") {
+        let simpleError;
+        if (e.left instanceof Error) {
+            simpleError = { error: e.left.message };
+        }
+        else if (e.left.error && typeof e.left.error === "string") {
+            simpleError = { error: e.left.error };
+        }
+        else {
+            try {
+                simpleError = { error: `${JSON.stringify(e.left)}` };
+            }
+            catch (jsonError) {
+                simpleError = { error: `Unknown error ${e.left}` };
+            }
+        }
         return {
             type: "left",
-            left: e.left,
+            left: simpleError,
         };
     }
     return {

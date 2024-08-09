@@ -22,7 +22,7 @@ function check_committer() {
   COMMITTER_NAME=$(git config user.name)
   if [ "$COMMITTER_NAME" != "totovoto" ]; then
     echo "not totovoto"
-    exit 1
+    sh ~/.bash_macros/utils/switch-github-user.sh totovoto
   fi
 }
 

@@ -1,8 +1,7 @@
+import { SimpleError } from "../types.js"
 import { ApiLeft, ApiRight, FpTsEither } from "./either.js"
 
-export let apiEitherToFpTsEither = <E, A>(
-  e: ApiLeft<E> | ApiRight<A>
-): FpTsEither<E, A> => {
+export let apiEitherToFpTsEither = <E, A>(e: ApiLeft<E> | ApiRight<A>): FpTsEither<E, A> => {
   if (e.type === "left") {
     return {
       _tag: "Left",
@@ -17,12 +16,25 @@ export let apiEitherToFpTsEither = <E, A>(
 }
 
 export let fpTsEitherToApiEither = <E, A>(
-  e: FpTsEither<E, A>
-): ApiLeft<E> | ApiRight<A> => {
+  e: FpTsEither<E, A>,
+): ApiLeft<SimpleError> | ApiRight<A> => {
   if (e._tag === "Left") {
+    let simpleError: SimpleError
+    if (e.left instanceof Error) {
+      simpleError = { error: e.left.message }
+    } else if ((e.left as any).error && typeof (e.left as any).error === "string") {
+      simpleError = { error: (e.left as any).error }
+    } else {
+      try {
+        simpleError = { error: `${JSON.stringify(e.left)}` }
+      } catch (jsonError) {
+        simpleError = { error: `Unknown error ${e.left}` }
+      }
+    }
+
     return {
       type: "left",
-      left: e.left,
+      left: simpleError,
     }
   }
 
@@ -32,7 +44,7 @@ export let fpTsEitherToApiEither = <E, A>(
   }
 }
 
-export let toApiEither = <E, A>(e: FpTsEither<E, A>): string =>
+export let toApiEither = <E, A>(e: FpTsEither<SimpleError, A>): string =>
   JSON.stringify(fpTsEitherToApiEither(e))
 
 export let fromApiEither = <E, A>(s: string): FpTsEither<E, A> =>
