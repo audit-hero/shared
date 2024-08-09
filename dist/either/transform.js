@@ -37,6 +37,12 @@ export let fpTsEitherToApiEither = (e) => {
         right: e.right,
     };
 };
+/**
+ * Transform Error object to json format with error in `SimpleError` format. Can already input SimpleError as well.
+ */
 export let toApiEither = (e) => JSON.stringify(fpTsEitherToApiEither(e));
+/**
+ * Deserializes json string into to E.Either.
+ */
 export let fromApiEither = (s) => apiEitherToFpTsEither(JSON.parse(s));
 //# sourceMappingURL=transform.js.map

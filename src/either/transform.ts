@@ -44,8 +44,14 @@ export let fpTsEitherToApiEither = <E, A>(
   }
 }
 
+/**
+ * Transform Error object to json format with error in `SimpleError` format. Can already input SimpleError as well.
+ */
 export let toApiEither = <E, A>(e: FpTsEither<SimpleError, A>): string =>
   JSON.stringify(fpTsEitherToApiEither(e))
 
+/**
+ * Deserializes json string into to E.Either.
+ */
 export let fromApiEither = <E, A>(s: string): FpTsEither<E, A> =>
   apiEitherToFpTsEither(JSON.parse(s))
