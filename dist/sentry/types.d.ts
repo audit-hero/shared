@@ -1,10 +1,10 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2, APIGatewayProxyStructuredResultV2, Callback, Context } from "aws-lambda";
+import { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2, Callback, Context } from "aws-lambda";
 import { ResponseStream } from "../lambda-stream/ResponseStream.js";
 export type LambdaSentryProps = {
     name: string;
     handler: LambdaRequestHandler;
 };
-export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<APIGatewayProxyResultV2 | void>;
+export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<void | any>;
 export type StreamingSentryProps = {
     name: string;
     handler: StreamingRequestHandler;

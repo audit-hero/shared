@@ -1,6 +1,5 @@
 import {
   APIGatewayProxyEventV2,
-  APIGatewayProxyResultV2,
   APIGatewayProxyStructuredResultV2,
   Callback,
   Context,
@@ -12,18 +11,17 @@ export type LambdaSentryProps = {
   handler: LambdaRequestHandler
 }
 
-export type LambdaRequestHandler = (
-  ev: APIGatewayProxyEventV2
-) => Promise<APIGatewayProxyResultV2 | void>
+// For lambdas, we should return the object. It will be converted to body string in aws
+export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<void | any>
 
 export type StreamingSentryProps = {
   name: string
   handler: StreamingRequestHandler
 }
-
+// For streaming, we should return status code in the end
 export type StreamingRequestHandler = (
   ev: APIGatewayProxyEventV2,
   streamResponse: ResponseStream,
   ctx?: Context,
-  callback?: Callback
+  callback?: Callback,
 ) => Promise<APIGatewayProxyStructuredResultV2>
