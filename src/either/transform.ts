@@ -88,6 +88,8 @@ export let fetchTE =
 /**
  * We either stream chat response as string + return it as E.right in the end, or return the error
  * as E.left
+ * 
+ * 1
  *
  * @param stream - here we stream the E.right content as string before returning the E.right in the
  * end as well.
