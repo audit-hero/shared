@@ -142,7 +142,11 @@ export let fetchTEStream = (
             let error = `error streaming finding ${err.message}`
             return { _tag: "Left", left: { error } }
           }),
-      )) as Either<Error, string>
+      )
+      .catch((err: any) => {
+        let error = `error streaming fetching ${err.message}`
+        return { _tag: "Left", left: { error } }
+      })) as Either<Error, string>
 
   return resultFun
 }
