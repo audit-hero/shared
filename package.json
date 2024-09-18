@@ -10,6 +10,10 @@
       "import": "./dist/sentry/sentry.js",
       "types": "./dist/sentry/sentry.d.ts"
     },
+    "./fetch": {
+      "import": "./dist/lambda-stream/fetchTE.js",
+      "types": "./dist/lambda-stream/fetchTE.d.ts"
+    },
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"

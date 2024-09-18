@@ -1,6 +1,6 @@
 import { it, expect } from "vitest"
 import { FpTsEither } from "./either.js"
-import { fetchTEStream, fromApiEither, toApiEither } from "./transform.js"
+import { fromApiEither, toApiEither } from "./transform.js"
 
 it("transforms failed api either", () => {
   let res: FpTsEither<Error, number> = {

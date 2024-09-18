@@ -23,14 +23,16 @@ export function streamify(handler) {
                     statusCode: 200,
                     headers: {
                         "content-type": responseStream._contentType || "application/json",
-                        "Access-Control-Allow-Origin": origin
+                        "Access-Control-Allow-Origin": origin,
                     },
-                    ...(responseStream._isBase64Encoded ? { isBase64Encoded: responseStream._isBase64Encoded } : {}),
+                    ...(responseStream._isBase64Encoded
+                        ? { isBase64Encoded: responseStream._isBase64Encoded }
+                        : {}),
                     body: responseStream._isBase64Encoded
                         ? responseStream.getBufferedData().toString("base64")
-                        : responseStream.getBufferedData().toString()
+                        : responseStream.getBufferedData().toString(),
                 };
-            }
+            },
         });
     }
 }
@@ -41,5 +43,4 @@ function patchArgs(argList) {
     }
     return argList[1];
 }
-export { ResponseStream } from "./ResponseStream.js";
 //# sourceMappingURL=index.js.map

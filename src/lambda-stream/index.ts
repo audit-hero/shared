@@ -18,11 +18,10 @@ export type RequestHandler = (
   ev: APIGatewayProxyEventV2,
   streamResponse: ResponseStream,
   ctx?: Context,
-  callback?: Callback
+  callback?: Callback,
 ) => any | Promise<any>
 
-export function streamify(handler: RequestHandler
-): RequestHandler {
+export function streamify(handler: RequestHandler): RequestHandler {
   // Check for global awslambda
   if (isInAWS()) {
     // @ts-ignore
@@ -33,21 +32,23 @@ export function streamify(handler: RequestHandler
         const responseStream: ResponseStream = patchArgs(argList)
         await target(...argList)
 
-        let headers = argList[0].headers || {};
-        let origin = headers["Origin"] || headers["origin"] || "*";
+        let headers = argList[0].headers || {}
+        let origin = headers["Origin"] || headers["origin"] || "*"
 
         return {
           statusCode: 200,
           headers: {
             "content-type": responseStream._contentType || "application/json",
-            "Access-Control-Allow-Origin": origin
+            "Access-Control-Allow-Origin": origin,
           },
-          ...(responseStream._isBase64Encoded ? { isBase64Encoded: responseStream._isBase64Encoded } : {}),
+          ...(responseStream._isBase64Encoded
+            ? { isBase64Encoded: responseStream._isBase64Encoded }
+            : {}),
           body: responseStream._isBase64Encoded
             ? responseStream.getBufferedData().toString("base64")
-            : responseStream.getBufferedData().toString()
+            : responseStream.getBufferedData().toString(),
         }
-      }
+      },
     })
   }
 }
@@ -59,5 +60,3 @@ function patchArgs(argList: any[]): ResponseStream {
   }
   return argList[1]
 }
-
-export { ResponseStream } from "./ResponseStream.js"
