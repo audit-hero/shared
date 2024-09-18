@@ -117,11 +117,11 @@ export let fetchTEStream = (input, init, stream) => {
     })
         .catch((err) => {
         let error = `error streaming finding ${err.message}`;
-        return { _tag: "Left", left: { error } };
+        return { _tag: "Left", left: new Error(error) };
     }))
         .catch((err) => {
         let error = `error streaming fetching ${err.message}`;
-        return { _tag: "Left", left: { error } };
+        return { _tag: "Left", left: new Error(error) };
     }));
     return resultFun;
 };
