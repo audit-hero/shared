@@ -17,9 +17,7 @@ export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<void 
 export type StreamingSentryProps = {
   name: string
   handler: StreamingRequestHandler
-  trim?: (chunk: string) => string
 }
-
 // For streaming, we should return status code in the end
 export type StreamingRequestHandler = (
   ev: APIGatewayProxyEventV2,

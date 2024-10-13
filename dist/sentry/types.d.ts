@@ -8,6 +8,5 @@ export type LambdaRequestHandler = (ev: APIGatewayProxyEventV2) => Promise<void 
 export type StreamingSentryProps = {
     name: string;
     handler: StreamingRequestHandler;
-    trim?: (chunk: string) => string;
 };
 export type StreamingRequestHandler = (ev: APIGatewayProxyEventV2, streamResponse: ResponseStream, ctx?: Context, callback?: Callback) => Promise<APIGatewayProxyStructuredResultV2>;

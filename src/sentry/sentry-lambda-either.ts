@@ -3,7 +3,6 @@ import {
   addCorsHeaders,
   getSentryProjectName,
   isCorsRequest,
-  ResponseStream,
   sentryError,
   setSentryProjectName,
 } from "./sentry.js"
@@ -99,7 +98,7 @@ export let withSentryE =
  */
 export let withStreamingSentryE = (props: StreamingSentryProps): StreamingRequestHandler =>
   streamify(async (event, stream) => {
-    const { name, handler, trim } = props
+    const { name, handler } = props
 
     try {
       setSentryProjectName(name)
@@ -111,15 +110,7 @@ export let withStreamingSentryE = (props: StreamingSentryProps): StreamingReques
         return corsResponse
       }
 
-      if (trim) {
-        return await handler(event, {
-          ...stream,
-          write: (chunk: string) => stream.write(trim(chunk)),
-          end: () => stream.end(),
-        } as ResponseStream)
-      } else {
-        return await handler(event, stream)
-      }
+      return await handler(event, stream)
     } catch (e) {
       sentryError(`Unexpected error in: ${getSentryProjectName()}`, e)
 

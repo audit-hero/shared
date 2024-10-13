@@ -63,7 +63,7 @@ export let withSentryE = (props) => async (event) => {
  *
  */
 export let withStreamingSentryE = (props) => streamify(async (event, stream) => {
-    const { name, handler, trim } = props;
+    const { name, handler } = props;
     try {
         setSentryProjectName(name);
         let corsResponse = isCorsRequest(event);
@@ -71,16 +71,7 @@ export let withStreamingSentryE = (props) => streamify(async (event, stream) => 
             stream.end();
             return corsResponse;
         }
-        if (trim) {
-            return await handler(event, {
-                ...stream,
-                write: (chunk) => stream.write(trim(chunk)),
-                end: () => stream.end(),
-            });
-        }
-        else {
-            return await handler(event, stream);
-        }
+        return await handler(event, stream);
     }
     catch (e) {
         sentryError(`Unexpected error in: ${getSentryProjectName()}`, e);
