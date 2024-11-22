@@ -31,7 +31,7 @@ export let fetchTE =
 
 /**
  * We either stream chat response as string + return it as E.right in the end, or return the error
- * as E.left
+ * as E.left.
  *
  * @param stream - here we stream the E.right content as string before returning the E.right in the
  * end as well.
@@ -74,8 +74,10 @@ export let fetchTEStream = (
           )
           .then(() => {
             let response: Either<Error, string>
-            if (isError) {
-              response = fromApiEither<string>(JSON.parse(fullRes))
+            let errorJson = isErrorJson(fullRes)
+
+            if (isError && errorJson) {
+              response = fromApiEither<string>(errorJson)
             } else {
               response = { _tag: "Right", right: fullRes }
             }
@@ -83,16 +85,26 @@ export let fetchTEStream = (
             return response
           })
           .catch((err: any) => {
-            let error = `error streaming finding ${err.message}`
+            let error = `fetchTEStream error 1: ${err.message}`
             return { _tag: "Left", left: new Error(error) }
           }),
       )
       .catch((err: any) => {
-        let error = `error streaming fetching ${err.message}`
+        let error = `fetchTEStream error 2: ${err.message}`
         return { _tag: "Left", left: new Error(error) }
       })) as Either<Error, string>
 
   return resultFun
+}
+
+let isErrorJson = (chunk: string) => {
+  try {
+    let json = JSON.parse(chunk)
+    if (!json.type || !json.left) return undefined
+    return json
+  } catch (err) {
+    return undefined
+  }
 }
 
 export { ResponseStream } from "./ResponseStream.js"

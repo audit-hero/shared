@@ -19,7 +19,7 @@ export let fetchTE = (input, init) => () => fetch(input, init)
     .catch((error) => Promise.resolve({ _tag: "Left", left: error }));
 /**
  * We either stream chat response as string + return it as E.right in the end, or return the error
- * as E.left
+ * as E.left.
  *
  * @param stream - here we stream the E.right content as string before returning the E.right in the
  * end as well.
@@ -54,8 +54,9 @@ export let fetchTEStream = (input, init, stream) => {
     }))
         .then(() => {
         let response;
-        if (isError) {
-            response = fromApiEither(JSON.parse(fullRes));
+        let errorJson = isErrorJson(fullRes);
+        if (isError && errorJson) {
+            response = fromApiEither(errorJson);
         }
         else {
             response = { _tag: "Right", right: fullRes };
@@ -63,14 +64,25 @@ export let fetchTEStream = (input, init, stream) => {
         return response;
     })
         .catch((err) => {
-        let error = `error streaming finding ${err.message}`;
+        let error = `fetchTEStream error 1: ${err.message}`;
         return { _tag: "Left", left: new Error(error) };
     }))
         .catch((err) => {
-        let error = `error streaming fetching ${err.message}`;
+        let error = `fetchTEStream error 2: ${err.message}`;
         return { _tag: "Left", left: new Error(error) };
     }));
     return resultFun;
+};
+let isErrorJson = (chunk) => {
+    try {
+        let json = JSON.parse(chunk);
+        if (!json.type || !json.left)
+            return undefined;
+        return json;
+    }
+    catch (err) {
+        return undefined;
+    }
 };
 export { ResponseStream } from "./ResponseStream.js";
 //# sourceMappingURL=fetchTE.js.map
