@@ -8,7 +8,7 @@ import { FpTsEither as Either } from "../either/either.js"
  * to chain this function in order to enable correct error conversion and bubbling.
  *
  *
- * use this after getting text from fetch
+ * use this after getting text from fetch 
  *
  * () => TE.TaskEither<Error, string>,
  * TE.chain(fromApiEitherTE)
