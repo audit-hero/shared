@@ -6,10 +6,12 @@ import { ApiLeft, ApiRight, FpTsEither as Either } from "./either.js"
  *
  */
 export let fromApiEither = <A>(e: ApiLeft<SimpleError> | ApiRight<A>): Either<Error, A> => {
-  if (!e.type) return { _tag: "Left", left: new Error("Invalid API response") }
+  if (!e.type)
+    return { _tag: "Left", left: new Error(`fae: Invalid API response ${getStringAny(e)}`) }
 
   if (e.type === "left") {
-    if (!e.left?.error) return { _tag: "Left", left: new Error("Invalid API response") }
+    if (!e.left?.error)
+      return { _tag: "Left", left: new Error(`fae: Invalid API response ${getStringAny(e)}`) }
 
     return {
       _tag: "Left",
@@ -17,11 +19,17 @@ export let fromApiEither = <A>(e: ApiLeft<SimpleError> | ApiRight<A>): Either<Er
     }
   }
 
-  if (!e.right) return { _tag: "Left", left: new Error("Invalid API response") }
-
   return {
     _tag: "Right",
     right: e.right,
+  }
+}
+
+let getStringAny = (e: any) => {
+  try {
+    return e.toString().slice(0, 200)
+  } catch (e) {
+    return "unknown error"
   }
 }
 
@@ -41,7 +49,7 @@ export let toApiEither = <E, A>(e: Either<E, A>): ApiLeft<SimpleError> | ApiRigh
       try {
         simpleError = { error: `${JSON.stringify(e.left)}` }
       } catch (jsonError) {
-        simpleError = { error: `Unknown error ${e.left}` }
+        simpleError = { error: `fae: Unknown error ${e.left}` }
       }
     }
 
@@ -56,4 +64,3 @@ export let toApiEither = <E, A>(e: Either<E, A>): ApiLeft<SimpleError> | ApiRigh
     right: e.right,
   }
 }
-

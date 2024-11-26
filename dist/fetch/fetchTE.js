@@ -13,6 +13,9 @@ import { fromApiEither } from "../either/transform.js";
  * TE.map((it)=> it as MyObject)
  */
 export let fromApiEitherTE = (s) => () => Promise.resolve(fromApiEither(JSON.parse(s)));
+/**
+ * Calls the fetch, parses response with fromApiEither, and returns a TE.TaskEither<Error, A>
+ */
 export let fetchTE = (input, init) => () => fetch(input, init)
     .then((response) => response.text())
     .then((text) => fromApiEitherTE(text)())
@@ -21,32 +24,26 @@ export let fetchTE = (input, init) => () => fetch(input, init)
  * We either stream chat response as string + return it as E.right in the end, or return the error
  * as E.left.
  *
- * @param stream - here we stream the E.right content as string before returning the E.right in the
+ * @param stream - Here, we stream the E.right content as string before returning the E.right in the
  * end as well.
- * @param options.removeCodeBlock - if true, we trim the stream content between the first ```
+ * @param initProgress - Here, we stream the pre response dot progress (eg on auth success, etc, before the real answer)
  */
-export let fetchTEStream = (input, init, stream) => {
+export let fetchTEStream = (input, init, stream, initProgress) => {
     let decoder = new TextDecoder("utf-8");
     let fullRes = "";
-    let isError = false;
-    let resultFun = async () => (await fetch(input, init)
-        .then((response) => response.body)
-        .then((body) => body
+    let pipeBody = (body) => body
         ?.pipeTo(new WritableStream({
         write: (bytes) => {
-            let chunk = decoder.decode(bytes);
-            isError = fullRes === "" && chunk.match(/(\{|\[).*/) !== null;
-            if (fullRes === "") {
-                if (!isError) {
-                    stream(chunk);
-                    fullRes += chunk;
-                }
-                else {
-                    stream("");
-                    fullRes += chunk.match(/(\{|\[).*/)?.[0] || "";
-                }
+            let chunkWithDots = decoder.decode(bytes);
+            let chunk = chunkWithDots;
+            if (fullRes === "" && chunkWithDots.match(/^\.+$/)) {
+                initProgress?.();
+                chunk = "";
             }
-            else {
+            else if (fullRes === "" && chunkWithDots.match(/^\.+.*/)) {
+                chunk = chunkWithDots.split(/^\.+/)[1];
+            }
+            if (chunk !== "") {
                 stream(chunk);
                 fullRes += chunk;
             }
@@ -55,7 +52,7 @@ export let fetchTEStream = (input, init, stream) => {
         .then(() => {
         let response;
         let errorJson = isErrorJson(fullRes);
-        if (isError && errorJson) {
+        if (errorJson) {
             response = fromApiEither(errorJson);
         }
         else {
@@ -64,11 +61,14 @@ export let fetchTEStream = (input, init, stream) => {
         return response;
     })
         .catch((err) => {
-        let error = `fetchTEStream error 1: ${err.message}`;
+        let error = `fetchTEStream pipeBody error: ${err.message}`;
         return { _tag: "Left", left: new Error(error) };
-    }))
+    });
+    let resultFun = async () => (await fetch(input, init)
+        .then((it) => it.body)
+        .then(pipeBody)
         .catch((err) => {
-        let error = `fetchTEStream error 2: ${err.message}`;
+        let error = `fetchTEStream error1: ${err.message}`;
         return { _tag: "Left", left: new Error(error) };
     }));
     return resultFun;
@@ -84,5 +84,5 @@ let isErrorJson = (chunk) => {
         return undefined;
     }
 };
-export { ResponseStream } from "./ResponseStream.js";
+export { ResponseStream } from "../lambda-stream/ResponseStream.js";
 //# sourceMappingURL=fetchTE.js.map

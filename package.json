@@ -11,8 +11,8 @@
       "types": "./dist/sentry/sentry.d.ts"
     },
     "./fetch": {
-      "import": "./dist/lambda-stream/fetchTE.js",
-      "types": "./dist/lambda-stream/fetchTE.d.ts"
+      "import": "./dist/fetch/index.js",
+      "types": "./dist/fetch/index.d.ts"
     },
     ".": {
       "import": "./dist/index.js",

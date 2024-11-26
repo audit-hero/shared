@@ -24,6 +24,7 @@ function check_committer() {
     echo "not totovoto"
     sh ~/.bash_macros/utils/switch-github-user.sh totovoto
   fi
+
 }
 
 function build_dist() {
@@ -33,6 +34,8 @@ function build_dist() {
   git add dist
 }
 
+PREV_COMMITTER=$(git config user.name)
 check_committer
 check_todo
 build_dist
+sh ~/.bash_macros/utils/switch-github-user.sh "$PREV_COMMITTER"
