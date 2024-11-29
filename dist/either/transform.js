@@ -4,17 +4,17 @@
  */
 export let fromApiEither = (e) => {
     if (!e.type)
-        return { _tag: "Left", left: new Error("Invalid API response") };
+        return { _tag: "Left", left: new Error("fae: Invalid API response") };
     if (e.type === "left") {
         if (!e.left?.error)
-            return { _tag: "Left", left: new Error("Invalid API response") };
+            return { _tag: "Left", left: new Error("fae: Invalid API response") };
         return {
             _tag: "Left",
             left: new Error(e.left.error),
         };
     }
     if (!e.right)
-        return { _tag: "Left", left: new Error("Invalid API response") };
+        return { _tag: "Left", left: new Error("fae: Invalid API response") };
     return {
         _tag: "Right",
         right: e.right,
@@ -39,7 +39,7 @@ export let toApiEither = (e) => {
                 simpleError = { error: `${JSON.stringify(e.left)}` };
             }
             catch (jsonError) {
-                simpleError = { error: `Unknown error ${e.left}` };
+                simpleError = { error: `fae: Unknown error ${e.left}` };
             }
         }
         return {
