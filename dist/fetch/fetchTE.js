@@ -84,5 +84,5 @@ let isErrorJson = (chunk) => {
         return undefined;
     }
 };
-export { ResponseStream } from "./ResponseStream.js";
+export { ResponseStream } from "../lambda-stream/ResponseStream.js";
 //# sourceMappingURL=fetchTE.js.map

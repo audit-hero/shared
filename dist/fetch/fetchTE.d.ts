@@ -23,4 +23,4 @@ export declare let fetchTE: <A>(input: RequestInfo | URL, init?: RequestInit | u
  * @param options.removeCodeBlock - if true, we trim the stream content between the first ```
  */
 export declare let fetchTEStream: (input: RequestInfo | URL, init: RequestInit | undefined, stream: (chunk: string) => void) => (() => Promise<Either<Error, string>>);
-export { ResponseStream } from "./ResponseStream.js";
+export { ResponseStream } from "../lambda-stream/ResponseStream.js";

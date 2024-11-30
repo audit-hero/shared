@@ -107,4 +107,4 @@ let isErrorJson = (chunk: string) => {
   }
 }
 
-export { ResponseStream } from "./ResponseStream.js"
+export { ResponseStream } from "../lambda-stream/ResponseStream.js"
