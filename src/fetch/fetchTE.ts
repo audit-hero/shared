@@ -8,7 +8,7 @@ import { FpTsEither as Either } from "../either/either.js"
  * to chain this function in order to enable correct error conversion and bubbling.
  *
  *
- * use this after getting text from fetch 
+ * use this after getting text from fetch
  *
  * () => TE.TaskEither<Error, string>,
  * TE.chain(fromApiEitherTE)
@@ -33,64 +33,64 @@ export let fetchTE =
  * We either stream chat response as string + return it as E.right in the end, or return the error
  * as E.left.
  *
- * @param stream - here we stream the E.right content as string before returning the E.right in the
+ * @param stream - Here, we stream the E.right content as string before returning the E.right in the
  * end as well.
- * @param options.removeCodeBlock - if true, we trim the stream content between the first ```
+ * @param initProgress - Here, we stream the pre response dot progress (eg on auth success, etc, before the real answer)
  */
 export let fetchTEStream = (
   input: RequestInfo | URL,
   init: RequestInit | undefined,
   stream: (chunk: string) => void,
+  initProgress?: () => void,
 ): (() => Promise<Either<Error, string>>) => {
   let decoder = new TextDecoder("utf-8")
   let fullRes = ""
-  let isError = false
+
+  let pipeBody = (body: ReadableStream<Uint8Array> | null) =>
+    body
+      ?.pipeTo(
+        new WritableStream({
+          write: (bytes) => {
+            let chunkWithDots = decoder.decode(bytes)
+            let chunk = chunkWithDots
+
+            if (fullRes === "" && chunkWithDots.match(/^\.+$/)) {
+              initProgress?.()
+              chunk = ""
+            } else if (fullRes === "" && chunkWithDots.match(/^\.+.*/)) {
+              chunk = chunkWithDots.split(/^\.+/)[1]
+            }
+
+            if (chunk !== "") {
+              stream(chunk)
+              fullRes += chunk
+            }
+          },
+        }),
+      )
+      .then(() => {
+        let response: Either<Error, string>
+        let errorJson = isErrorJson(fullRes)
+
+        if (errorJson) {
+          response = fromApiEither<string>(errorJson)
+        } else {
+          response = { _tag: "Right", right: fullRes }
+        }
+
+        return response
+      })
+      .catch((err: any) => {
+        let error = `fetchTEStream pipeBody error: ${err.message}`
+        return { _tag: "Left", left: new Error(error) }
+      })
 
   let resultFun: () => Promise<Either<Error, string>> = async () =>
     (await fetch(input, init)
-      .then((response) => response.body)
-      .then((body) =>
-        body
-          ?.pipeTo(
-            new WritableStream({
-              write: (bytes) => {
-                let chunk = decoder.decode(bytes)
-                isError = fullRes === "" && chunk.match(/(\{|\[).*/) !== null
-
-                if (fullRes === "") {
-                  if (!isError) {
-                    stream(chunk)
-                    fullRes += chunk
-                  } else {
-                    stream("")
-                    fullRes += chunk.match(/(\{|\[).*/)?.[0] || ""
-                  }
-                } else {
-                  stream(chunk)
-                  fullRes += chunk
-                }
-              },
-            }),
-          )
-          .then(() => {
-            let response: Either<Error, string>
-            let errorJson = isErrorJson(fullRes)
-
-            if (isError && errorJson) {
-              response = fromApiEither<string>(errorJson)
-            } else {
-              response = { _tag: "Right", right: fullRes }
-            }
-
-            return response
-          })
-          .catch((err: any) => {
-            let error = `fetchTEStream error 1: ${err.message}`
-            return { _tag: "Left", left: new Error(error) }
-          }),
-      )
+      .then((it) => it.body)
+      .then(pipeBody)
       .catch((err: any) => {
-        let error = `fetchTEStream error 2: ${err.message}`
+        let error = `fetchTEStream error1: ${err.message}`
         return { _tag: "Left", left: new Error(error) }
       })) as Either<Error, string>
 
