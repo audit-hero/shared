@@ -19,6 +19,9 @@ export let fromApiEitherTE =
   () =>
     Promise.resolve(fromApiEither<A>(JSON.parse(s))) as Promise<Either<Error, A>>
 
+/**
+ * Calls the fetch, parses response with fromApiEither, and returns a TE.TaskEither<Error, A>
+ */
 export let fetchTE =
   <A>(input: RequestInfo | URL, init?: RequestInit | undefined) =>
   (): Promise<Either<Error, A>> =>

@@ -13,6 +13,9 @@ import { FpTsEither as Either } from "../either/either.js";
  * TE.map((it)=> it as MyObject)
  */
 export declare let fromApiEitherTE: <A>(s: string) => () => Promise<Either<Error, A>>;
+/**
+ * Calls the fetch, parses response with fromApiEither, and returns a TE.TaskEither<Error, A>
+ */
 export declare let fetchTE: <A>(input: RequestInfo | URL, init?: RequestInit | undefined) => () => Promise<Either<Error, A>>;
 /**
  * We either stream chat response as string + return it as E.right in the end, or return the error

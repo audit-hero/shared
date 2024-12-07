@@ -13,6 +13,9 @@ import { fromApiEither } from "../either/transform.js";
  * TE.map((it)=> it as MyObject)
  */
 export let fromApiEitherTE = (s) => () => Promise.resolve(fromApiEither(JSON.parse(s)));
+/**
+ * Calls the fetch, parses response with fromApiEither, and returns a TE.TaskEither<Error, A>
+ */
 export let fetchTE = (input, init) => () => fetch(input, init)
     .then((response) => response.text())
     .then((text) => fromApiEitherTE(text)())
