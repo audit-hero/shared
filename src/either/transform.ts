@@ -19,9 +19,6 @@ export let fromApiEither = <A>(e: ApiLeft<SimpleError> | ApiRight<A>): Either<Er
     }
   }
 
-  if (!e.right)
-    return { _tag: "Left", left: new Error(`fae: Invalid API response ${getStringAny(e)}`) }
-
   return {
     _tag: "Right",
     right: e.right,

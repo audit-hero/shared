@@ -13,8 +13,6 @@ export let fromApiEither = (e) => {
             left: new Error(e.left.error),
         };
     }
-    if (!e.right)
-        return { _tag: "Left", left: new Error(`fae: Invalid API response ${getStringAny(e)}`) };
     return {
         _tag: "Right",
         right: e.right,
