@@ -31,7 +31,6 @@
     "vitest": "^2.1.2"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.137",
-    "text-splitter": "tonisives/text-splitter#commit=c44985757b5aaa7f262041a55dfccd49e300db58"
+    "@types/aws-lambda": "^8.10.137"
   }
 }
