@@ -1,12 +1,12 @@
 // Either represents a value of one of two possible types (a disjoint union).
-export type ApiLeft<E> = {
-  readonly type: "left"
-  readonly left: E
+export type ApiRight<E> = {
+  readonly status: "success"
+  readonly data: E | null
 }
 
-export type ApiRight<A> = {
-  readonly type: "right"
-  readonly right: A
+export type ApiLeft<A> = {
+  readonly status: "failure"
+  readonly reason: A
 }
 
 export type FpTsLeft<E> = {
@@ -20,4 +20,3 @@ export type FpTsRight<A> = {
 }
 
 export type FpTsEither<E, A> = FpTsLeft<E> | FpTsRight<A>
-

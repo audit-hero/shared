@@ -1,10 +1,10 @@
-export type ApiLeft<E> = {
-    readonly type: "left";
-    readonly left: E;
+export type ApiRight<E> = {
+    readonly status: "success";
+    readonly data: E | null;
 };
-export type ApiRight<A> = {
-    readonly type: "right";
-    readonly right: A;
+export type ApiLeft<A> = {
+    readonly status: "failure";
+    readonly reason: A;
 };
 export type FpTsLeft<E> = {
     readonly _tag: "Left";

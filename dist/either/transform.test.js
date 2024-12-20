@@ -6,7 +6,7 @@ it("transforms failed api either", () => {
         left: new Error("error"),
     };
     let ser = JSON.stringify(toApiEither(res));
-    expect(ser).toMatchInlineSnapshot(`"{"type":"left","left":{"error":"error"}}"`);
+    expect(ser).toMatchInlineSnapshot(`"{"status":"failure","reason":{"error":"error"}}"`);
     let deser = fromApiEither(JSON.parse(ser));
     expect(deser._tag).toBe("Left");
 });
@@ -16,7 +16,7 @@ it("transforms successful api either", () => {
         right: 5,
     };
     let ser = JSON.stringify(toApiEither(res));
-    expect(ser).toMatchInlineSnapshot(`"{"type":"right","right":5}"`);
+    expect(ser).toMatchInlineSnapshot(`"{"status":"success","data":5}"`);
     let deser = fromApiEither(JSON.parse(ser));
     expect(deser._tag).toBe("Right");
 });

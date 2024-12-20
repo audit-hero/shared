@@ -3,23 +3,27 @@
  *
  */
 export let fromApiEither = (e) => {
-    if (!e.type)
-        return { _tag: "Left", left: new Error(`fae: Invalid API response ${getStringAny(e)}`) };
-    if (e.type === "left") {
-        if (!e.left?.error)
-            return { _tag: "Left", left: new Error(`fae: Invalid API response ${getStringAny(e)}`) };
+    if (!e.status)
+        return { _tag: "Left", left: new Error(`fae: No status in API response: ${getStringAny(e)}`) };
+    if (e.status === "failure") {
+        if (!e.reason)
+            return { _tag: "Left", left: new Error(`fae: No error reason: ${getStringAny(e)}`) };
         return {
             _tag: "Left",
-            left: new Error(e.left.error),
+            left: new Error(e.reason.error),
         };
     }
     return {
         _tag: "Right",
-        right: e.right,
+        right: e.data,
     };
 };
 let getStringAny = (e) => {
     try {
+        if (typeof e === "string")
+            return e.slice(0, 200);
+        if (typeof e === "object")
+            return JSON.stringify(e).slice(0, 200);
         return e.toString().slice(0, 200);
     }
     catch (e) {
@@ -49,13 +53,13 @@ export let toApiEither = (e) => {
             }
         }
         return {
-            type: "left",
-            left: simpleError,
+            status: "failure",
+            reason: simpleError,
         };
     }
     return {
-        type: "right",
-        right: e.right,
+        status: "success",
+        data: e.right,
     };
 };
 //# sourceMappingURL=transform.js.map

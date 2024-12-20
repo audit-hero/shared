@@ -10,7 +10,7 @@ it("transforms failed api either", () => {
 
   let ser = JSON.stringify(toApiEither(res))
 
-  expect(ser).toMatchInlineSnapshot(`"{"type":"left","left":{"error":"error"}}"`)
+  expect(ser).toMatchInlineSnapshot(`"{"status":"failure","reason":{"error":"error"}}"`)
 
   let deser = fromApiEither<number>(JSON.parse(ser))
   expect(deser._tag).toBe("Left")
@@ -24,7 +24,7 @@ it("transforms successful api either", () => {
 
   let ser = JSON.stringify(toApiEither(res))
 
-  expect(ser).toMatchInlineSnapshot(`"{"type":"right","right":5}"`)
+  expect(ser).toMatchInlineSnapshot(`"{"status":"success","data":5}"`)
 
   let deser = fromApiEither<number>(JSON.parse(ser))
   expect(deser._tag).toBe("Right")
