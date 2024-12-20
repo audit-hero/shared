@@ -26,4 +26,3 @@ export declare let fetchTE: <A>(input: RequestInfo | URL, init?: RequestInit | u
  * @param initProgress - Here, we stream the pre response dot progress (eg on auth success, etc, before the real answer)
  */
 export declare let fetchTEStream: (input: RequestInfo | URL, init: RequestInit | undefined, stream: (chunk: string) => void, initProgress?: () => void) => (() => Promise<Either<Error, string>>);
-export { ResponseStream } from "../lambda-stream/ResponseStream.js";
