@@ -76,7 +76,7 @@ export let fetchTEStream = (input, init, stream, initProgress) => {
 let isErrorJson = (chunk) => {
     try {
         let json = JSON.parse(chunk);
-        if (!json.type || !json.left)
+        if (!json.status || json.status !== "failure")
             return undefined;
         return json;
     }

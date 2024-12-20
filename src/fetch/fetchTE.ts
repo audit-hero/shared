@@ -1,5 +1,6 @@
 import { fromApiEither } from "../either/transform.js"
-import { FpTsEither as Either } from "../either/either.js"
+import { ApiLeft, ApiRight, FpTsEither as Either } from "../either/either.js"
+import { SimpleError } from "../types.js"
 
 /**
  * WIP
@@ -102,8 +103,8 @@ export let fetchTEStream = (
 
 let isErrorJson = (chunk: string) => {
   try {
-    let json = JSON.parse(chunk)
-    if (!json.type || !json.left) return undefined
+    let json = JSON.parse(chunk) as ApiLeft<SimpleError> | ApiRight<any>
+    if (!json.status || json.status !== "failure") return undefined
     return json
   } catch (err) {
     return undefined
