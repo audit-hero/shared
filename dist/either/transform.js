@@ -31,30 +31,30 @@ let getStringAny = (e) => {
     }
 };
 /**
- * Transfrom E.Either<Error, any> to API's format. Including changing Error to SimpleError.
+ * Transfrom E.Either<Error, any> to API's format. Including changing Error to a string.
  *
  * Used in lambda returns
  */
 export let toApiEither = (e) => {
     if (e._tag === "Left") {
-        let simpleError;
+        let reason;
         if (e.left instanceof Error) {
-            simpleError = { error: e.left.message };
+            reason = e.left.message;
         }
         else if (e.left.error && typeof e.left.error === "string") {
-            simpleError = { error: e.left.error };
+            reason = e.left.error;
         }
         else {
             try {
-                simpleError = { error: `${JSON.stringify(e.left)}` };
+                reason = `${JSON.stringify(e.left)}`;
             }
             catch (jsonError) {
-                simpleError = { error: `fae: Unknown error ${e.left}` };
+                reason = `fae: Unknown error ${e.left}`;
             }
         }
         return {
             status: "failure",
-            reason: simpleError,
+            reason,
         };
     }
     return {

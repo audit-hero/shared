@@ -6,8 +6,8 @@ import { ApiLeft, ApiRight, FpTsEither as Either } from "./either.js";
  */
 export declare let fromApiEither: <A>(e: ApiLeft<SimpleError> | ApiRight<A>) => Either<Error, A>;
 /**
- * Transfrom E.Either<Error, any> to API's format. Including changing Error to SimpleError.
+ * Transfrom E.Either<Error, any> to API's format. Including changing Error to a string.
  *
  * Used in lambda returns
  */
-export declare let toApiEither: <E, A>(e: Either<E, A>) => ApiLeft<SimpleError> | ApiRight<A>;
+export declare let toApiEither: <E, A>(e: Either<E, A>) => ApiLeft<string> | ApiRight<A>;

@@ -5,12 +5,12 @@ import { fromApiEither, toApiEither } from "./transform.js"
 it("transforms failed api either", () => {
   let res: FpTsEither<Error, number> = {
     _tag: "Left",
-    left: new Error("error"),
+    left: new Error("error 1"),
   }
 
   let ser = JSON.stringify(toApiEither(res))
 
-  expect(ser).toMatchInlineSnapshot(`"{"status":"failure","reason":{"error":"error"}}"`)
+  expect(ser).toMatchInlineSnapshot(`"{"status":"failure","reason":"error 1"}"`)
 
   let deser = fromApiEither<number>(JSON.parse(ser))
   expect(deser._tag).toBe("Left")
