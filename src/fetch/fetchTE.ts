@@ -103,7 +103,7 @@ export let fetchTEStream = (
 
 let isErrorJson = (chunk: string) => {
   try {
-    let json = JSON.parse(chunk) as ApiLeft<SimpleError> | ApiRight<any>
+    let json = JSON.parse(chunk) as ApiLeft<string> | ApiRight<any>
     if (!json.status || json.status !== "failure") return undefined
     return json
   } catch (err) {

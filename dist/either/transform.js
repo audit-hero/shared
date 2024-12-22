@@ -10,7 +10,7 @@ export let fromApiEither = (e) => {
             return { _tag: "Left", left: new Error(`fae: No error reason: ${getStringAny(e)}`) };
         return {
             _tag: "Left",
-            left: new Error(e.reason.error),
+            left: new Error(e.reason),
         };
     }
     return {

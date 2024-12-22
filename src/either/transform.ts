@@ -5,7 +5,7 @@ import { ApiLeft, ApiRight, FpTsEither as Either } from "./either.js"
  * Tranforms API's format to E.Either<Error, any>. Including changing SimpleError to Error.
  *
  */
-export let fromApiEither = <A>(e: ApiLeft<SimpleError> | ApiRight<A>): Either<Error, A> => {
+export let fromApiEither = <A>(e: ApiLeft<string> | ApiRight<A>): Either<Error, A> => {
   if (!e.status)
     return { _tag: "Left", left: new Error(`fae: No status in API response: ${getStringAny(e)}`) }
 
@@ -15,7 +15,7 @@ export let fromApiEither = <A>(e: ApiLeft<SimpleError> | ApiRight<A>): Either<Er
 
     return {
       _tag: "Left",
-      left: new Error(e.reason.error),
+      left: new Error(e.reason),
     }
   }
 
